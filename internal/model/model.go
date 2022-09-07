@@ -12,25 +12,32 @@ const (
 	RUB Currency = iota
 )
 
+const (
+	TINKOFF Bank = iota
+)
+
 type (
 	Status          int
 	Currency        int
+	Bank            int
 	Category        string
 	BankTransaction struct {
-		OperationDate          time.Time // Date of operation
-		PaymentDate            time.Time // Payment date
-		CardNumber             string    // Card number
-		Status                 Status    // Status
-		Operation              int64     // Operation amount
-		Currency               Currency  // Transaction currency
-		Payment                int64     // Amount of payment
-		PaymentCurrency        Currency  // Payment currency
-		Cashback               int64     // Cashback
-		Category               Category  // Category
-		MCC                    int64     // MCC
-		Description            string    // Description
-		Bonuses                int64     // Bonuses (including cashback)
-		InvestmentBankRounding int64     // Rounding per investment bank
-		Rounding               int64     // The amount of the operation with rounding
+		ID                     uint64    `json:"ID"`                     // ID
+		Bank                   Bank      `json:"Bank"`                   // Bank //TODO foreign key
+		OperationDate          time.Time `json:"OperationDate"`          // Date of operation
+		PaymentDate            time.Time `json:"PaymentDate"`            // Payment date
+		CardNumber             string    `json:"CardNumber"`             // Card number
+		Status                 Status    `json:"Status"`                 // Status
+		Operation              float64   `json:"Operation"`              // Operation amount
+		Currency               Currency  `json:"Currency"`               // Transaction currency
+		Payment                float64   `json:"Payment"`                // Amount of payment
+		PaymentCurrency        Currency  `json:"PaymentCurrency"`        // Payment currency
+		Cashback               float64   `json:"Cashback"`               // Cashback
+		Category               Category  `json:"Category"`               // Category
+		MCC                    int64     `json:"MCC"`                    // MCC
+		Description            string    `json:"Description"`            // Description
+		Bonuses                float64   `json:"Bonuses"`                // Bonuses (including cashback)
+		InvestmentBankRounding float64   `json:"InvestmentBankRounding"` // Rounding per investment bank
+		Rounding               float64   `json:"Rounding"`               // The amount of the operation with rounding
 	}
 )
