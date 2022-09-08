@@ -70,7 +70,7 @@ func NewContext(connectionString *ConnectionString, options ...Option) (*Context
 		opt(pg)
 	}
 
-	builder := squirrel.StatementBuilder.PlaceholderFormat(squirrel.AtP)
+	builder := squirrel.StatementBuilder.PlaceholderFormat(squirrel.Dollar)
 	pg.Builder = &builder
 
 	config, err := pgxpool.ParseConfig(connectionString.String())

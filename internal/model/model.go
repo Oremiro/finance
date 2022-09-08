@@ -18,7 +18,7 @@ type (
 	}
 	BankTransaction struct {
 		ID              uint64    `json:"ID"`              // ID
-		Bank            Bank      `json:"Bank"`            // Bank //TODO foreign key
+		Bank            *Bank     `json:"Bank"`            // Bank //TODO foreign key
 		OperationDate   time.Time `json:"OperationDate"`   // Date of operation
 		PaymentDate     time.Time `json:"PaymentDate"`     // Payment date
 		CardNumber      string    `json:"CardNumber"`      // Card number

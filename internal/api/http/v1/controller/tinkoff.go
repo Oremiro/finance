@@ -34,18 +34,16 @@ func (t *TinkoffController) getAll(c *gin.Context) {
 }
 
 func (t *TinkoffController) update(c *gin.Context) {
-	//buf := new(strings.Builder)
-	//n, err := io.Copy(buf, c.Request.Body)
-	//fmt.Println(buf.String())
-	//fmt.Println(n)
-	//err = t.service.UpdateBankTransactions(c.Request.Context())
 	command := &tinkoff.UpdateBankTransactionsCommand{}
 	err := c.ShouldBindJSON(&command)
 	if err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
 	}
-	err = t.service.UpdateBankTransactions(c.Request.Context(), command)
-	if err != nil {
-		c.AbortWithStatus(http.StatusBadRequest)
-	}
+	func() {
+		err := t.service.UpdateBankTransactions(c.Request.Context(), command)
+		if err != nil {
+			// send to possible queue status message
+		}
+	}()
+	c.Status(http.StatusOK)
 }
