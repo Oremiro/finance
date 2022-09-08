@@ -17,7 +17,8 @@ type Service struct {
 	file      storage.ITinkoffFile
 }
 
-func (s *Service) UpdateBankTransactions(ctx context.Context, command *UpdateBankTransactionsCommand) error {
+func (s *Service) UpdateBankTransactions(command *UpdateBankTransactionsCommand) error {
+	ctx := context.Background()
 	statements, err := s.file.GetDataFromBankStatement(ctx, command.FileBase64)
 	if err != nil {
 		return err
@@ -43,6 +44,7 @@ func (s *Service) UpdateBankTransactions(ctx context.Context, command *UpdateBan
 	}
 
 	s.pg.StoreTinkoffTransactionsFromBankStatements(ctx, transactions)
+	ctx.Done()
 	return nil
 }
 

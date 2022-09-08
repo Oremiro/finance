@@ -39,8 +39,8 @@ func (t *TinkoffController) update(c *gin.Context) {
 	if err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
 	}
-	func() {
-		err := t.service.UpdateBankTransactions(c.Request.Context(), command)
+	go func() {
+		err := t.service.UpdateBankTransactions(command)
 		if err != nil {
 			// send to possible queue status message
 		}
