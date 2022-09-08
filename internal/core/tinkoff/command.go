@@ -1,5 +1,7 @@
 package tinkoff
 
 type (
-	UpdateBankTransactionsCommand struct{}
+	UpdateBankTransactionsCommand struct {
+		FileBase64 string `json:"file,omitempty"`
+	}
 )

@@ -13,6 +13,6 @@ type (
 		DownloadBankStatement(ctx context.Context)
 	}
 	ITinkoffFile interface {
-		GetDataFromBankStatementExcel(ctx context.Context)
+		GetDataFromBankStatement(ctx context.Context, fileBase64 string)
 	}
 )

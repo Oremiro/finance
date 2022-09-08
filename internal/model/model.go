@@ -4,21 +4,12 @@ package model
 import "time"
 
 const (
-	OK     Status = iota
-	FAILED Status = iota
-)
-
-const (
-	RUB Currency = iota
-)
-
-const (
 	TINKOFF BankName = "TINKOFF"
 )
 
 type (
-	Status   int
-	Currency int
+	Status   string
+	Currency string
 	Category string
 	BankName string
 	Bank     struct {

@@ -20,7 +20,7 @@ func (t *TinkoffController) AddRoutes(routerGroup *gin.RouterGroup) { //TODO thi
 		routerGroup = routerGroup.Group("/transactions")
 		{
 			routerGroup.GET("/get-all", t.getAll)
-			routerGroup.PUT("/update")
+			routerGroup.POST("/update", t.update)
 		}
 	}
 }
@@ -34,7 +34,17 @@ func (t *TinkoffController) getAll(c *gin.Context) {
 }
 
 func (t *TinkoffController) update(c *gin.Context) {
-	err := t.service.UpdateBankTransactions(c.Request.Context())
+	//buf := new(strings.Builder)
+	//n, err := io.Copy(buf, c.Request.Body)
+	//fmt.Println(buf.String())
+	//fmt.Println(n)
+	//err = t.service.UpdateBankTransactions(c.Request.Context())
+	command := &tinkoff.UpdateBankTransactionsCommand{}
+	err := c.ShouldBindJSON(&command)
+	if err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+	}
+	err = t.service.UpdateBankTransactions(c.Request.Context(), command)
 	if err != nil {
 		c.AbortWithStatus(http.StatusBadRequest)
 	}

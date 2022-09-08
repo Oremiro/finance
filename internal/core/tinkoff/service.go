@@ -7,7 +7,7 @@ import (
 
 type ITinkoffService interface {
 	GetAll(ctx context.Context, query GetAllQuery) (*GetAllResponse, error)
-	UpdateBankTransactions(ctx context.Context) error
+	UpdateBankTransactions(ctx context.Context, command *UpdateBankTransactionsCommand) error
 }
 
 type Service struct {
@@ -16,7 +16,8 @@ type Service struct {
 	file      storage.ITinkoffFile
 }
 
-func (s *Service) UpdateBankTransactions(ctx context.Context) error {
+func (s *Service) UpdateBankTransactions(ctx context.Context, command *UpdateBankTransactionsCommand) error {
+	s.file.GetDataFromBankStatement(ctx, command.FileBase64)
 	//TODO implement me
 	panic("implement me")
 }
