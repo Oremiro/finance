@@ -17,7 +17,11 @@ func NewTinkoffController(service *tinkoff.Service) *TinkoffController {
 func (t *TinkoffController) AddRoutes(routerGroup *gin.RouterGroup) { //TODO think about changing value without ref; https://stackoverflow.com/questions/42967235/golang-gin-gonic-split-routes-into-multiple-files
 	routerGroup = routerGroup.Group("/tinkoff")
 	{
-		routerGroup.GET("/get-all", t.getAll)
+		routerGroup = routerGroup.Group("/transactions")
+		{
+			routerGroup.GET("/get-all", t.getAll)
+			routerGroup.PUT("/update")
+		}
 	}
 }
 
@@ -27,4 +31,11 @@ func (t *TinkoffController) getAll(c *gin.Context) {
 		c.AbortWithStatus(http.StatusBadRequest)
 	}
 	c.JSON(http.StatusOK, &getAllResponse)
+}
+
+func (t *TinkoffController) update(c *gin.Context) {
+	err := t.service.UpdateBankTransactions(c.Request.Context())
+	if err != nil {
+		c.AbortWithStatus(http.StatusBadRequest)
+	}
 }

@@ -4,7 +4,7 @@ import (
 	"finance/internal/api/http/v1"
 	"finance/internal/api/http/v1/controller"
 	"finance/internal/core/tinkoff"
-	"finance/internal/infra"
+	"finance/internal/infra/storage"
 	"finance/pkg/httpserver"
 	"finance/pkg/postgres"
 	"fmt"
@@ -22,10 +22,11 @@ func Run(config *Config) {
 	defer pg.Dispose()
 
 	// Storages
-	storage := infra.NewFinanceStorage(pg)
-
+	pgContext := storage.NewPostgres(pg)
+	webDriverContext := storage.NewWebDriver()
+	fileContext := storage.NewFile()
 	// Services //TODO mediator pattern
-	tinkoffService := tinkoff.NewService(storage)
+	tinkoffService := tinkoff.NewService(pgContext, webDriverContext, fileContext)
 
 	// Controllers
 	var controllers = []v1.IController{

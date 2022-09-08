@@ -2,19 +2,27 @@ package tinkoff
 
 import (
 	"context"
-	"finance/internal/infra"
+	"finance/internal/infra/storage"
 )
 
 type ITinkoffService interface {
 	GetAll(ctx context.Context, query GetAllQuery) (*GetAllResponse, error)
+	UpdateBankTransactions(ctx context.Context) error
 }
 
 type Service struct {
-	storage *infra.FinanceStorage
+	pg        storage.ITinkoffPostgres
+	webdriver storage.ITinkoffWebDriver
+	file      storage.ITinkoffFile
+}
+
+func (s *Service) UpdateBankTransactions(ctx context.Context) error {
+	//TODO implement me
+	panic("implement me")
 }
 
 func (s *Service) GetAll(ctx context.Context, query GetAllQuery) (*GetAllResponse, error) {
-	items, err := s.storage.GetAllTinkoffTransactions(ctx)
+	items, err := s.pg.GetAllTinkoffTransactions(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -24,6 +32,6 @@ func (s *Service) GetAll(ctx context.Context, query GetAllQuery) (*GetAllRespons
 	return response, nil
 }
 
-func NewService(storage *infra.FinanceStorage) *Service {
-	return &Service{storage: storage}
+func NewService(pg storage.ITinkoffPostgres, webdriver storage.ITinkoffWebDriver, file storage.ITinkoffFile) *Service {
+	return &Service{pg: pg, webdriver: webdriver, file: file}
 }

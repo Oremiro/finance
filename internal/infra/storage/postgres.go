@@ -1,4 +1,4 @@
-package infra
+package storage
 
 import (
 	"context"
@@ -6,16 +6,11 @@ import (
 	"finance/pkg/postgres"
 )
 
-type (
-	ITinkoffStorage interface {
-		GetAllTinkoffTransactions(ctx context.Context) ([]*model.BankTransaction, error)
-	}
-	FinanceStorage struct {
-		Context *postgres.Context
-	}
-)
+type Postgres struct {
+	Context *postgres.Context
+}
 
-func (f *FinanceStorage) GetAllTinkoffTransactions(ctx context.Context) ([]*model.BankTransaction, error) {
+func (f *Postgres) GetAllTinkoffTransactions(ctx context.Context) ([]*model.BankTransaction, error) {
 	// TODO query is future paged request
 	sql, _, err := f.Context.Builder.
 		Select("id", "operation_date", "payment_date", "status", "operation").
@@ -49,6 +44,6 @@ func (f *FinanceStorage) GetAllTinkoffTransactions(ctx context.Context) ([]*mode
 	return items, nil
 }
 
-func NewFinanceStorage(context *postgres.Context) *FinanceStorage {
-	return &FinanceStorage{Context: context}
+func NewPostgres(context *postgres.Context) *Postgres {
+	return &Postgres{Context: context}
 }
